@@ -1,0 +1,5 @@
+﻿name: predictify
+dependencies:
+    - name: chainlink
+      version: "1.3.0"
+      github: smartcontractkit/chainlink

@@ -1,0 +1,169 @@
+Metadata-Version: 2.1
+Name: ape-ens
+Version: 0.8.1
+Summary: ape-ens: Ape plugin for ENS argument conversion and contracts
+Home-page: https://github.com/ApeWorX/ape-ens
+Author: ApeWorX Ltd.
+Author-email: admin@apeworx.io
+License: Apache-2.0
+Keywords: ethereum
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.9,<4
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: eth-ape<0.9,>=0.8.1
+Requires-Dist: web3<8,>=6.20.1
+Provides-Extra: test
+Requires-Dist: pytest>=6.0; extra == "test"
+Requires-Dist: pytest-xdist; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-mock; extra == "test"
+Requires-Dist: ape-polygon; extra == "test"
+Provides-Extra: lint
+Requires-Dist: black<25,>=24.10.0; extra == "lint"
+Requires-Dist: mypy<2,>=1.13.0; extra == "lint"
+Requires-Dist: types-setuptools; extra == "lint"
+Requires-Dist: flake8<8,>=7.1.1; extra == "lint"
+Requires-Dist: flake8-breakpoint<2,>=1.1.0; extra == "lint"
+Requires-Dist: flake8-print<6,>=5.0.0; extra == "lint"
+Requires-Dist: flake8-pydantic; extra == "lint"
+Requires-Dist: flake8-type-checking; extra == "lint"
+Requires-Dist: isort<6,>=5.13.2; extra == "lint"
+Requires-Dist: mdformat>=0.7.19; extra == "lint"
+Requires-Dist: mdformat-gfm>=0.3.5; extra == "lint"
+Requires-Dist: mdformat-frontmatter>=0.4.1; extra == "lint"
+Requires-Dist: mdformat-pyproject>=0.0.2; extra == "lint"
+Provides-Extra: doc
+Requires-Dist: sphinx-ape; extra == "doc"
+Provides-Extra: release
+Requires-Dist: setuptools>=75.6.0; extra == "release"
+Requires-Dist: setuptools-scm; extra == "release"
+Requires-Dist: wheel; extra == "release"
+Requires-Dist: twine; extra == "release"
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-xdist; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-mock; extra == "dev"
+Requires-Dist: ape-polygon; extra == "dev"
+Requires-Dist: black<25,>=24.10.0; extra == "dev"
+Requires-Dist: mypy<2,>=1.13.0; extra == "dev"
+Requires-Dist: types-setuptools; extra == "dev"
+Requires-Dist: flake8<8,>=7.1.1; extra == "dev"
+Requires-Dist: flake8-breakpoint<2,>=1.1.0; extra == "dev"
+Requires-Dist: flake8-print<6,>=5.0.0; extra == "dev"
+Requires-Dist: flake8-pydantic; extra == "dev"
+Requires-Dist: flake8-type-checking; extra == "dev"
+Requires-Dist: isort<6,>=5.13.2; extra == "dev"
+Requires-Dist: mdformat>=0.7.19; extra == "dev"
+Requires-Dist: mdformat-gfm>=0.3.5; extra == "dev"
+Requires-Dist: mdformat-frontmatter>=0.4.1; extra == "dev"
+Requires-Dist: mdformat-pyproject>=0.0.2; extra == "dev"
+Requires-Dist: sphinx-ape; extra == "dev"
+Requires-Dist: setuptools>=75.6.0; extra == "dev"
+Requires-Dist: setuptools-scm; extra == "dev"
+Requires-Dist: wheel; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: commitizen; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: pytest-watch; extra == "dev"
+Requires-Dist: IPython; extra == "dev"
+Requires-Dist: ipdb; extra == "dev"
+
+# Quick Start
+
+Ape plugin for ENS argument conversion and contracts
+
+## Dependencies
+
+- [python3](https://www.python.org/downloads) version 3.9 up to 3.12.
+
+## Installation
+
+### via `pip`
+
+You can install the latest release via [`pip`](https://pypi.org/project/pip/):
+
+```bash
+pip install ape-ens
+```
+
+### via `setuptools`
+
+You can clone the repository and use [`setuptools`](https://github.com/pypa/setuptools) for the most up-to-date version:
+
+```bash
+git clone https://github.com/ApeWorX/ape-ens.git
+cd ape-ens
+python3 setup.py install
+```
+
+## Quick Usage
+
+The ENS plugin requires a mainnet connection to resolve ENS names because ENS contracts are only deployed to mainnet.
+Thus, the first thing you should do is ensure you have configured a mainnet provider.
+For example, if you use `infura` or `alchemy`, install the associated plugin:
+
+```bash
+ape plugins install infura
+```
+
+Afterwards, you should see it in the output of the `list` command:
+
+```bash
+$ ape plugins list
+
+Installed Plugins:
+  infura      0.4.0
+  ...
+```
+
+After your provider plugin of choice is installed, configure it to be your default mainnet provider in your `ape-config.yaml` file:
+
+```yaml
+ethereum:
+  mainnet:
+    default_provider: infura
+```
+
+Finally, you can start the ape console using any network of your choice:
+
+```bash
+ape console --network :rinkeby:infura
+```
+
+Then, convert an `ens` domain to an `AddressType`:
+
+```python
+In [1]: from ape.types import AddressType
+In [2]: convert("vitalik.eth", AddressType)
+Out[2]: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
+```
+
+Get the Ethereum Name Service (ENS) namehash using the `namehash` function:
+
+```py
+from ape_ens.utils import namehash
+# or
+# from ape_ens.utils.namehash import namehash
+>> namehash("eth").hex()
+"0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae"
+
+>> namehash("foo.eth")
+HexBytes("0xde9b09fd7c5f901e23a3f19fecc54828e9c848539801e86591bd9801b019f84f")
+
+>> namehash("ape.rocks.eth").hex()
+"0x6294e43e29c5c1573554a68e6ff302fa867ab0d56b800f623c1abb77609d2b8d"
+```
+
+The ENS plugin temporarily connects to mainnet, caches the address resolution, and then your original network uses the result.
