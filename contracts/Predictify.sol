@@ -19,7 +19,6 @@ contract Predictify {
     uint256 public seedAmount; // Current seed for the next round
     uint256 public devFeeBalance; // Accumulated developer fee
 
-    //mapping(uint256 => Bet[]) public roundBets; // Store bets for each round
     Bet[] public currentRoundBets; // Bets for the current round only
     mapping(uint256 => address) public roundWinners; // Store the winner of each round
     mapping(address => uint256) public pendingWithdrawals; // Winnings available for withdrawal
@@ -68,7 +67,7 @@ contract Predictify {
             block.timestamp <= roundStartTime + betting_duration,
             "Betting period is over"
         );
-        require(msg.value == betAmount, "Bet amount must be exactly 0.01 ETH");
+        require(msg.value == betAmount, "Bet amount must be 0.01 ETH");
         require(
             !hasPlacedBet[currentRound][msg.sender],
             "You have already placed a prediction in this round"
@@ -86,7 +85,7 @@ contract Predictify {
     function endRound() external {
         require(
             block.timestamp >= roundStartTime + roundDuration,
-            "Round is not yet over"
+            "Minimum round duration is 24 hours"
         );
 
         (, int256 _actualPrice, , , ) = priceFeed.latestRoundData();

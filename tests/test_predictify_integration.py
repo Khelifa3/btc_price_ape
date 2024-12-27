@@ -1,5 +1,7 @@
 import ape
-import pytest
+import pytest, logging
+
+logger = logging.getLogger(__name__)
 
 @pytest.fixture
 def owner(accounts):
@@ -35,8 +37,8 @@ def test_place_bet(my_contract, accounts):
         my_contract.placeBet(bet_price, value="0.005 ether", sender=bettor)
 
     # Place a valid bet
-    my_contract.placeBet(bet_price, value="0.01 ether", sender=bettor)
-
+    receipt = my_contract.placeBet(bet_price, value="0.01 ether", sender=bettor)
+    logger.info(f'Gas used by placeBet: {receipt.gas_used}')
     # Verify the bet was recorded
     bet_count = my_contract.getBetCount()
     assert bet_count == 1
@@ -56,15 +58,16 @@ def test_end_round_with_mock_price(my_contract, owner, mock_price_feed, accounts
     mock_price_feed.setPrice(20500 * 10**8, sender=bettor1)  # Price is 20,500
 
     # End the round
-    my_contract.endRound(sender=bettor1)
-
+    receipt = my_contract.endRound(sender=bettor1)
+    logger.info(f'Gas used by endRound: {receipt.gas_used}')
     # Verify that the winner is bettor1 (closest to 20,500 and 1st to bet)
     winner = my_contract.roundWinners(1)
     assert winner == bettor1.address
 
     # Verify that the winner can withdraw
     winnings = my_contract.pendingWithdrawals(winner)
-    my_contract.withdrawWinnings(sender=bettor1)
+    receipt = my_contract.withdrawWinnings(sender=bettor1)
+    logger.info(f'Gas used by withdrawWinnings: {receipt.gas_used}')
     # Verify the winnings are transferred
     assert bettor1.balance > initial_balance
     assert my_contract.pendingWithdrawals(winner) == 0
@@ -72,7 +75,9 @@ def test_end_round_with_mock_price(my_contract, owner, mock_price_feed, accounts
     # Verify the owner can withdraw accumulated dev fees
     initial_balance = owner.balance
     dev_fee = my_contract.devFeeBalance()
-    my_contract.withdrawDevFee(sender=owner)
+    assert dev_fee > 0
+    receipt = my_contract.withdrawDevFee(sender=owner)
+    logger.info(f'Gas used by withdrawDevFee: {receipt.gas_used}')
     # Verify the dev fee is transferred
     assert owner.balance > initial_balance
     assert my_contract.devFeeBalance() == 0

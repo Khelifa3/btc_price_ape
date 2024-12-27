@@ -1,0 +1,7 @@
+2024-12-27 18:54:11 [ WARNING] There are no token lists installed
+	ValueError: Default token list has not been set.
+	(Use `--verbosity DEBUG` to see full stack-trace) (logging.py:238)
+2024-12-27 18:54:11 [    INFO] Gas used by placeBet: 139439 (test_predictify_integration.py:41)
+2024-12-27 18:54:12 [    INFO] Gas used by endRound: 119827 (test_predictify_integration.py:62)
+2024-12-27 18:54:12 [    INFO] Gas used by withdrawWinnings: 30001 (test_predictify_integration.py:70)
+2024-12-27 18:54:12 [    INFO] Gas used by withdrawDevFee: 32339 (test_predictify_integration.py:80)
